@@ -1,20 +1,26 @@
-def YTDownloader(base_url):
+import os
+from pytube import YouTube
 
-    pip install yt-dlp --quiet
-    import yt_dlp
-    import os
+def download_youtube_video(video_url):
+    def progress_callback(stream, chunk, bytes_remaining):
+        total_size = stream.filesize
+        downloaded_size = total_size - bytes_remaining
+        percentage = (downloaded_size / total_size) * 100
+        print(f"Download progress: {percentage:.2f}%")
 
-    url = base_url
-    downloads_folder = os.path.expanduser("~/Downloads")
-
-    ydl_opts = {
-        "outtmpl": os.path.join(downloads_folder, "%(title)s.%(ext)s")
-    }
-
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])  
+    try:
+        # Define the path for saving the video
+        save_path = os.path.join(os.path.expanduser("~"), 'Downloads')
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+        
+        yt = YouTube(video_url, on_progress_callback=progress_callback)
+        video_stream = yt.streams.get_highest_resolution()
+        video_stream.download(save_path)
+        print(f"Downloaded '{yt.title}' successfully to {save_path}!")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    base_url = input("Enter video url: ")
-    YTDownloader(base_url)
-    print("\nYour video has downloaded successfully!")
+    video_url = input("Enter the YouTube video URL: ")
+    download_youtube_video(video_url)
