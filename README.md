@@ -13,3 +13,9 @@ Run the the below commands on the terminal in the following order:
 
 To commit your changes, use the following command on the terminal.
 `git commit -m "Add your changes within the tags" fileTypeChanged`
+
+To commit your new changes, use the following command on the terminal.
+- [x] git status
+- [x] git add .
+- [x] git commit -a -m "Add your changes within the tags" fileTypeChanged
+- [x] git push . main
